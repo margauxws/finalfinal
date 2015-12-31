@@ -8,6 +8,10 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9EPP5qhbgJaTmdYl_kxdPFSkWBAvxImQ&callback=initMap"></script>
     
 <script>
+$(document).ready(function(){
+    function test () {
+    console.log("testing")
+  }
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: -33.8688, lng: 151.2195},
@@ -110,7 +114,9 @@ function initialize() {
       } else {
       alert('Street View data not found for this location.');
     }
-  }
+  };
+  initMap();
+});
 
 
 
