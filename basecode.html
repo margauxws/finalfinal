@@ -50,20 +50,7 @@ function createMarker(place) {
     infowindow.open(map, this);
   });
 }
-   // setting the position of the marker using the place ID and location.
-    marker.setPlace({
-      placeId: place.place_id,
-      location: place.geometry.location
-    });
-    marker.setVisible(true);
-
-    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-        'Place ID: ' + place.place_id + '<br>' +
-        place.formatted_address);
-    infowindow.open(map, marker);
-  });
   
-}
 //panoramatimeeee!
 function initialize() {
 
