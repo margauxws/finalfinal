@@ -7,6 +7,7 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9EPP5qhbgJaTmdYl_kxdPFSkWBAvxImQ&libraries=places&callback=initAutocomplete"></script>
 <script>
+
 $(document).ready(function(){
     function test () {
     console.log("testing")
@@ -73,6 +74,8 @@ function initAutocomplete() {
     });
     map.fitBounds(bounds);
   });
+
+initAutocomplete();
   // [END region_getplaces]
 }
 
