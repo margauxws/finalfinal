@@ -7,8 +7,10 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script src="http://cooper-union-maps-proxy.herokuapp.com/js/draw.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"</script>
-    <script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9EPP5qhbgJaTmdYl_kxdPFSkWBAvxImQ&callback=initMap"></script>
+    
+<script>
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: -33.8688, lng: 151.2195},
@@ -60,9 +62,9 @@ function initMap() {
 //panoramatimeeee!
 function initialize() {
 
- panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'));
+ panorama = new google.maps.StreetViewPanorama(document.getElementById('map'));
 
-     var markerPanoID = data.location.pano;
+     var markerPanoID = data.location.map;
         // Set the Pano to use the passed panoID
         panorama.setPano(markerPanoID);
         panorama.setPov({
@@ -70,6 +72,7 @@ function initialize() {
           pitch: 0
         });
         panorama.setVisible(true);
+
  google.maps.event.addListener(map, 'click', function(event) {
         sv.getPanoramaByLocation(event.latLng, 50, processSVData);
     });
@@ -84,7 +87,7 @@ function initialize() {
         title: data.location.description
       });
 
-      panorama.setPano(data.location.pano);
+      panorama.setPano(data.location.map);
       panorama.setPov({
         heading: 270,
         pitch: 0
@@ -97,7 +100,7 @@ function initialize() {
 
       google.maps.event.addListener(marker, 'click', function() {
 
-        var markerPanoID = data.location.pano;
+        var markerPanoID = data.location.map;
         // Set the Pano to use the passed panoID
         panorama.setPano(markerPanoID);
         panorama.setPov({
