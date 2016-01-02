@@ -1,148 +1,304 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #map {
-        background-color: #eeeeee;
-        height:500px;
-        width:500px;
-        margin: auto;
-        z-index: 0;
-        margin-top: 60px;
-      }
-.controls {
-  margin-top: 10px;
-  border: 1px solid transparent;
-  border-radius: 2px 0 0 2px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  height: 32px;
-  outline: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-#pac-input {
-  background-color: #fff;
-  font-family: Roboto;
-  font-size: 15px;
-  font-weight: 300;
-  margin-left: 12px;
-  padding: 0 11px 0 13px;
-  text-overflow: ellipsis;
-  width: 300px;
-}
-
-#pac-input:focus {
-  border-color: #4d90fe;
-}
-
-.pac-container {
-  font-family: Roboto;
-}
-
-#type-selector {
-  color: #fff;
-  background-color: #4d90fe;
-  padding: 5px 11px 0px 11px;
-}
-
-#type-selector label {
-  font-family: Roboto;
-  font-size: 13px;
-  font-weight: 300;
-}
-
-    </style>
-    <title>Places Searchbox</title>
-    <style>
-      #target {
-        width: 345px;
-      }
-    </style>
-  </head>
-  <body>
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <div id="map"></div>
+<head>
+  <title>Manhattan Weather</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDN-1heGoq8NOn-qAheZ8Dkx9gw4P02ty0&signed_in=true&callback=initMap"
+    async defer></script>
     <script>
-// This example adds a search box to a map, using the Google Place Autocomplete
-// feature. People can enter geographical searches. The search box will return a
-// pick list containing a mix of places and predicted search terms.
+    $(document).ready(function(){
 
-function initAutocomplete() {
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -33.8688, lng: 151.2195},
-    zoom: 13,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  });
+$("#output").html("What does Manhattan feel like today?");
 
-  // Create the search box and link it to the UI element.
-  var input = document.getElementById('pac-input');
-  var searchBox = new google.maps.places.SearchBox(input);
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+      var dateTime = new Date();
+      var currentEpoch = dateTime.getTime();
+      var markers = new Array();
+      var tag1 = 'cold'
+      var Manhattan = {lat: 40.674, lng: -73.9924077};
 
-  // Bias the SearchBox results towards current map's viewport.
-  map.addListener('bounds_changed', function() {
-    searchBox.setBounds(map.getBounds());
-  });
+      var api = {};
 
-  var markers = [];
-  // [START region_getplaces]
-  // Listen for the event fired when the user selects a prediction and retrieve
-  // more details for that place.
-  searchBox.addListener('places_changed', function() {
-    var places = searchBox.getPlaces();
+      api.key = "";
+        api.state = "NY";
+        api.city = "Manhattan";
 
-    if (places.length == 0) {
-      return;
+        api.conditions = "http://cooper-union-weather-proxy.herokuapp.com/weather/"+api.state+"/"+api.city;
+        $.ajax({
+              type: 'GET',
+              dataType: 'json',
+              url: api.conditions,
+              success: function(response){
+                    $("#location").html(api.city + ", " + api.state);
+
+
+                var tempfeelslike = response.current_observation.feelslike_f;
+
+                if(tempfeelslike >= 70 && tempfeelslike < 90){
+                  function initMap() {
+                        var customMapType = new google.maps.StyledMapType([
+                            {
+                              stylers: [
+                                {hue: '#9C2A3F'},
+                                {visibility: 'simplified'},
+                                {gamma: 0.5},
+                                {weight: 0.5}
+                              ]
+                            },
+                            {
+                              elementType: 'labels',
+                              stylers: [{visibility: 'off'}]
+                            },
+                            {
+                              featureType: 'water',
+                              stylers: [{color: '#9C2A3F'}]
+                            }
+                          ], {
+                            name: 'Custom Style'
+                        });
+                        var customMapTypeId = 'custom_style';
+
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                          zoom: 12,
+                          center: {lat: 40.674, lng: -73.946},  // Brooklyn.
+                          mapTypeControlOptions: {
+                            mapTypeIds: [google.maps.MapTypeId.ROADMAP, customMapTypeId]
+                          }
+                        });
+
+                        map.mapTypes.set(customMapTypeId, customMapType);
+                        map.setMapTypeId(customMapTypeId);
+        
+                      }
+                        initMap();
+
+
+                }
+
+                else if (tempfeelslike >= 55 && tempfeelslike <70){
+                    function initMap() {
+                        var customMapType = new google.maps.StyledMapType([
+                            {
+                              stylers: [
+                                {hue: '#DEA112'},
+                                {visibility: 'simplified'},
+                                {gamma: 0.5},
+                                {weight: 0.5}
+                              ]
+                            },
+                            {
+                              elementType: 'labels',
+                              stylers: [{visibility: 'off'}]
+                            },
+                            {
+                              featureType: 'water',
+                              stylers: [{color: '#DEA112'}]
+                            }
+                          ], {
+                            name: 'Custom Style'
+                        });
+                        var customMapTypeId = 'custom_style';
+
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                          zoom: 12,
+                          center: {lat: 40.674, lng: -73.946}, 
+                          mapTypeControlOptions: {
+                            mapTypeIds: [google.maps.MapTypeId.ROADMAP, customMapTypeId]
+                          }
+                        });
+
+                        map.mapTypes.set(customMapTypeId, customMapType);
+                        map.setMapTypeId(customMapTypeId);
+        
+                      }
+                        initMap();
+
+                }
+
+
+                else if (tempfeelslike >= 30 && tempfeelslike <55){
+                      function initMap() {
+                        var customMapType = new google.maps.StyledMapType([
+                            {
+                              stylers: [
+                                {hue: '#276073'},
+                                {visibility: 'simplified'},
+                                {gamma: 0.5},
+                                {weight: 0.5}
+                              ]
+                            },
+                            {
+                              elementType: 'labels',
+                              stylers: [{visibility: 'off'}]
+                            },
+                            {
+                              featureType: 'water',
+                              stylers: [{color: '#276073'}]
+                            }
+                          ], {
+                            name: 'Custom Style'
+                        });
+                        var customMapTypeId = 'custom_style';
+
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                          zoom: 12,
+                          center: {lat: 40.7564396, lng: -73.9924077},  
+                          mapTypeControlOptions: {
+                            mapTypeIds: [google.maps.MapTypeId.ROADMAP, customMapTypeId]
+                          }
+                        });
+
+                        map.mapTypes.set(customMapTypeId, customMapType);
+                        map.setMapTypeId(customMapTypeId);
+                     
+                      for (var i = 0; i<markers.length; i++) {
+                        var marker = new google.maps.Marker({
+                          position: new google.maps.LatLng(markers[i].location.latitude,markers[i].location.longitude),
+                          map: map,
+                        });
+                        google.maps.event.addListener(marker, 'mouseover', (function(marker, i)
+                        {
+                          return function(){
+                            infowindow.setContent('img src="'+markers[i].images.thumbnaul.url+'"/>');
+                            infowWindow.setZindex(1000);
+                            infowindow.open(map,marker);
+                          }
+                        })(marker,i));
+                        console.log ('the first part is working');
+                      }
+                    }
+        
+                      
+                      $.ajax({
+                      url:"http://cooper-union-instagram-proxy.herokuapp.com/search/tag/cold",
+                      dataType: 'jsonp',
+                      success: function(response){
+                        console.log(response);
+                        for(var x=0; x<response.data.length; x++) {
+                          if (response.data[x].caption){
+                            var caption = response.data[x].caption.text;
+                          }
+                          if (results.data[x].location) {
+                            markers.push(response.data[x]);
+                          }
+                        }
+                        console.log(markers);
+                        initialize();
+                      }
+                    });
+
+
+                        initMap();
+                    $('#weather').html("Currently, it feels like " + tempfeelslike + " degrees Fahrenheit.");
+                }
+
+                else {
+                    $('#weather').html("ERROR");
+                }
+
+          var rain = response.current_observation.precip_today_in;
+                if(rain >= 2 && rain < 4) {
+                  console.log('a ton of rain');
+                  $("#precipitation").html("I apologize deeply. It appears that you are in the middle of a downpour.");
+
+                }
+                else if (rain > 0 && rain < 2){
+                console.log('slight rain');
+                $("#precipitation").html("Unfortunately, it is raining today.");
+            
+                }
+                else if (rain == 0){
+                console.log('there is no rain');
+                $("#precipitation").html("Luckily, it is not raining today.");
+            
+                  }
+
+                
+
+
+              //do not delete these-for some reason code does not operate correctly without them  
+              }
+
+
+
+            });
+ 
+
+          });
+    </script>
+    <style>
+
+    body{
+      background-color:white;
+      font-family: Futura, sans-serif;
+    }
+    h1 {
+      color: #77828C;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      font-family: Arial, Georgia, 'Droid Sans', sans-serif;
+      letter-spacing: 3px;
+      font-weight: bold;
+      line-height: 1;
     }
 
-    // Clear out the old markers.
-    markers.forEach(function(marker) {
-      marker.setMap(null);
-    });
-    markers = [];
+    #header {
+      padding-top: 20px;
+      width: 100%;
+      height: 70px;
+      z-index: 1;
+      position: absolute;
+      top: 0px;
+      background-color: white;
+    }
+      #bodywrapper{
+        text-align:center;
 
-    // For each place, get the icon, name and location.
-    var bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
-      var icon = {
-        url: place.icon,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
-      };
-
-      // Create a marker for each place.
-      markers.push(new google.maps.Marker({
-        map: map,
-        icon: icon,
-        title: place.name,
-        position: place.geometry.location
-      }));
-
-      if (place.geometry.viewport) {
-        // Only geocodes have viewport.
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
       }
-    });
-    map.fitBounds(bounds);
-  });
-  // [END region_getplaces]
+      #map {
+        
+        height:100%;
+        bottom: 20px;
+        width:80%;
+        margin: auto;
+        z-index: 0;
+        position: absolute;
+        right: 0px;
+      }
+
+#sidebar {
+  float: left;
+  width: 18%;
+  height: 100%;
+  z-index: 1;
+  top: 200px;
+  position: relative;
+  text-align: right;
+  padding-right: 5px;
+  color: #869DB2;
+}
+#precipitation {
+  padding-top: 20px;
 }
 
+    </style>
+</head>
+<body>
 
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDN-1heGoq8NOn-qAheZ8Dkx9gw4P02ty0&libraries=places&callback=initAutocomplete"
-         async defer></script>
-  </body>
+
+
+  <div id="bodywrapper">
+    <div id="header">
+     <h1 id="output"></h1>
+    </div>
+      <div id="map"></div>
+      <div id="rain"></div>
+    <div id="sidebar">
+      <div id="weather"></div>
+      <div id="precipitation"></div>
+    </div>
+      <div id="temperature"></div>
+      <div id="location"></div>
+</div>
+
+</body>
 </html>
